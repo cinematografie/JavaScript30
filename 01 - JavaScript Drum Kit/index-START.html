@@ -6,59 +6,87 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<h3 class="title">Press keys on the keyboard to play the drums!</h3>
+<div id="output">
+</div>
+
+<h1 class="description">Accessible description: below are 9 drum sound buttons from left to right: Clap, Hihat, Kick, Openhat, Boom, Ride, Snare, Tom, and Tink. For each sound, you can press keys on your keyboard to make different sounds. As you press the keys there is a visual on the screen to show which key or keys is/are being pressed. The buttons are labeled with controls and sounds.</h1>
 
 
   <div class="keys">
-    <div data-key="65" class="key">
+    <div data-key="a" class="keytwo">
       <kbd>A</kbd>
       <span class="sound">clap</span>
     </div>
-    <div data-key="83" class="key">
+    <div data-key="s" class="keytwo">
       <kbd>S</kbd>
       <span class="sound">hihat</span>
     </div>
-    <div data-key="68" class="key">
+    <div data-key="d" class="keytwo">
       <kbd>D</kbd>
       <span class="sound">kick</span>
     </div>
-    <div data-key="70" class="key">
+    <div data-key="f" class="keytwo">
       <kbd>F</kbd>
       <span class="sound">openhat</span>
     </div>
-    <div data-key="71" class="key">
+    <div data-key="g" class="keytwo">
       <kbd>G</kbd>
       <span class="sound">boom</span>
     </div>
-    <div data-key="72" class="key">
+    <div data-key="h" class="keytwo">
       <kbd>H</kbd>
       <span class="sound">ride</span>
     </div>
-    <div data-key="74" class="key">
+    <div data-key="j" class="keytwo">
       <kbd>J</kbd>
       <span class="sound">snare</span>
     </div>
-    <div data-key="75" class="key">
+    <div data-key="k" class="keytwo">
       <kbd>K</kbd>
       <span class="sound">tom</span>
     </div>
-    <div data-key="76" class="key">
+    <div data-key="l" class="keytwo">
       <kbd>L</kbd>
       <span class="sound">tink</span>
     </div>
   </div>
 
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/hihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+  <audio data-key="a" src="sounds/clap.wav"></audio>
+  <audio data-key="s" src="sounds/hihat.wav"></audio>
+  <audio data-key="d" src="sounds/kick.wav"></audio>
+  <audio data-key="f" src="sounds/openhat.wav"></audio>
+  <audio data-key="g" src="sounds/boom.wav"></audio>
+  <audio data-key="h" src="sounds/ride.wav"></audio>
+  <audio data-key="j" src="sounds/snare.wav"></audio>
+  <audio data-key="k" src="sounds/tom.wav"></audio>
+  <audio data-key="l" src="sounds/tink.wav"></audio>
 
-<script>
+<script type="text/javascript" defer>
+window.addEventListener('keydown', function(e){
+  let p = document.createElement('p');
+  p.textContent = `KeyboardEvent: key='${e.key}' | code='${e.code}'`; //get the key code for the device and browser, you can console log to test this locally see below
+  document.getElementById('output')
+  //window.scrollTo(0, document.body.scrollHeight)
+  let audio = document.querySelector(`audio[data-key="${e.key}"]`);
+  let keytwo = document.querySelector(`.keytwo[data-key="${e.key}"]`);
+  //console.log(p); //to test in browser you can log your keys and change as necessary
+  audio.currentTime = 0; //rewind to start
+  audio.play()
+  keytwo.classList.add('playing')
+  keytwo.classList.remove('playing')
+  keytwo.classList.toggle('playing')
+  if(!audio) return false; // stop function if no audio
+}, true)
 
+function removeTransition(e) {
+
+  if(e.propertyName !== 'transform') return; //skip-it, skip-it if it's not a transform
+  this.classList.remove('playing')
+}
+const keys = document.querySelectorAll('.keytwo')
+
+keys.forEach(keytwo => keytwo.addEventListener('transitionend', removeTransition));
 </script>
 
 
